@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8" />
@@ -635,6 +635,14 @@
       showToast("تم نسخ النص — أرفق الصور من المعرض إذا لم يدعم المتصفح مشاركة الملفات مباشرة");
     };
 
+    window.sendToWhatsAppDirect = function(id) {
+      const item = properties.find((p) => String(p.id) === String(id));
+      if (!item) return;
+      const text = buildPropertyText(item);
+      const encoded = encodeURIComponent(text);
+      window.open(`https://wa.me/?text=${encoded}`, "_blank", "noopener,noreferrer");
+    };
+
     function resetFormMode() {
       editingId = null;
       form.reset();
@@ -765,6 +773,7 @@
             </div>
             <div class="card-footer">
               <button type="button" class="btn-share" onclick="shareWithImages('${item.id}')">مشاركة (نص + صور)</button>
+              <button type="button" class="btn-whatsapp" onclick="sendToWhatsAppDirect('${item.id}')">إرسال واتساب</button>
               <button type="button" class="btn-whatsapp" onclick="copyForWhatsApp('${item.id}')">نسخ النص</button>
               <button type="button" class="btn-edit" onclick="editProperty('${item.id}')">تعديل</button>
               <button type="button" class="btn-danger" onclick="deleteProperty('${item.id}')">حذف</button>
