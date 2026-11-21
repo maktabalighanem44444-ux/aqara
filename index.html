@@ -435,6 +435,10 @@
     const DB_NAME = "RealEstateDB";
     const STORE_NAME = "properties";
 
+    const OFFICE_NAME = "مجموعة علي غانم للأعمال العقارية - صافيتا";
+    const OFFICE_PHONE = "0958500501";
+    const WHATSAPP_INTL_PHONE = "963958500501";
+
     const form = document.getElementById("propertyForm");
     const formTitle = document.getElementById("formTitle");
     const submitBtn = document.getElementById("submitBtn");
@@ -591,14 +595,24 @@
 
     function buildPropertyText(item) {
       const fullAddress = [item.region, item.address].filter(Boolean).join(" - ");
-      return [
+      const baseLines = [
         `🏠 *${item.name}*`,
         item.type ? `🏷️ *النوع:* ${item.type}` : "",
         item.finish ? `🛠️ *الإكساء:* ${item.finish}` : "",
         fullAddress ? `📍 *العنوان:* ${fullAddress}` : "",
         item.area ? `📐 *المواصفات:* ${item.area}` : "",
-        item.price ? `💰 *السعر:* ${item.price}` : ""
-      ].filter(Boolean).join("\n");
+        item.price ? `💰 *السعر:* ${item.price}` : "",
+        OFFICE_NAME ? `🏢 *${OFFICE_NAME}*` : "",
+        OFFICE_PHONE ? `📞 *للتواصل:* ${OFFICE_PHONE}` : ""
+      ].filter(Boolean);
+
+      if (WHATSAPP_INTL_PHONE) {
+        const cleanDigits = WHATSAPP_INTL_PHONE.replace(/\D/g, "");
+        const encodedMsg = encodeURIComponent(baseLines.join("\n"));
+        baseLines.push(`💬 *تواصل واتساب:* https://wa.me/${cleanDigits}?text=${encodedMsg}`);
+      }
+
+      return baseLines.join("\n");
     }
 
     async function base64ToFile(dataUrl, filename) {
